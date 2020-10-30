@@ -3,22 +3,30 @@ import { workspace } from "coc.nvim";
 export enum LogLevel {
 	Info = 0,
 	Warn,
-	Err
+	Err,
+}
+
+const LEVEL: LogLevel = LogLevel.Warn;
+
+function LogToString(level: LogLevel): String {
+	switch (level) {
+		case LogLevel.Info: {
+			return "more";
+		}
+		case LogLevel.Warn: {
+			return "warning";
+		}
+		case LogLevel.Err: {
+			return "error";
+		}
+		default: {
+			return "undefined";
+		}
+	}
 }
 
 export const LOG = (level: LogLevel, message: string) => {
-	switch (level) {
-		case LogLevel.Info: {
-			workspace.showMessage(`coc-cord: ${message}`, "more");
-		}
-		case LogLevel.Warn: {
-			workspace.showMessage(`coc-cord: ${message}`, "warning");
-		}
-		case LogLevel.Err: {
-			workspace.showMessage(`coc-cord: ${message}`, "error");
-		}
-		default: {
-			workspace.showMessage(`coc-cord: ${message}`, undefined);
-		}
+	if (level >= LEVEL) {
+		workspace.showMessage(`coc-cord: ${message}`, LogToString(level));
 	}
 };
